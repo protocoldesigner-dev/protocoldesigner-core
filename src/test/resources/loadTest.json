@@ -1,0 +1,82 @@
+{
+  "subjects": {
+    "3fbb945b-c668-421e-afdd-65485a58b9e0": {
+      "id": "3fbb945b-c668-421e-afdd-65485a58b9e0",
+      "name": "node1",
+      "assertions": [],
+      "x": 200,
+      "y": 170,
+      "initial": "c0211c87-13cd-4825-95d7-7178d39eee91",
+      "states": {
+        "c0211c87-13cd-4825-95d7-7178d39eee91": {
+          "id": "c0211c87-13cd-4825-95d7-7178d39eee91",
+          "name": "state1",
+          "assertions": [],
+          "x": 520,
+          "y": 100,
+          "jumps": {
+            "ff207347-e27c-4a5c-95ce-bc9c3b28feaf": {
+              "id": "ff207347-e27c-4a5c-95ce-bc9c3b28feaf",
+              "name": "jump1",
+              "assertions": [],
+              "x": 890,
+              "y": 200,
+              "fromStateName": "state1",
+              "toStateName": "state2",
+              "positive": true,
+              "peerJumps": []
+            }
+          }
+        },
+        "e048546a-c1df-48be-8abf-7406c882e13b": {
+          "id": "e048546a-c1df-48be-8abf-7406c882e13b",
+          "name": "state2",
+          "assertions": [],
+          "x": 780,
+          "y": 370,
+          "jumps": {}
+        }
+      }
+    },
+    "6911c4bd-2555-4360-89a4-4a947c73d87b": {
+      "id": "6911c4bd-2555-4360-89a4-4a947c73d87b",
+      "name": "node2",
+      "assertions": [],
+      "x": 220,
+      "y": 530,
+      "initial": "0027c188-2272-40ee-bb7a-7501ea900a6f",
+      "states": {
+        "0027c188-2272-40ee-bb7a-7501ea900a6f": {
+          "id": "0027c188-2272-40ee-bb7a-7501ea900a6f",
+          "name": "state11",
+          "assertions": [],
+          "x": 520,
+          "y": 550,
+          "jumps": {
+            "f3985c2d-594b-44a6-bb76-a02c879cda8d": {
+              "id": "f3985c2d-594b-44a6-bb76-a02c879cda8d",
+              "name": "jump2",
+              "assertions": [],
+              "x": 890,
+              "y": 730,
+              "fromStateName": "state11",
+              "toStateName": "state22",
+              "positive": false,
+              "peerJumps": []
+            }
+          }
+        },
+        "54cdd831-cc93-4070-a025-4ccdc7801f4e": {
+          "id": "54cdd831-cc93-4070-a025-4ccdc7801f4e",
+          "name": "state22",
+          "assertions": [],
+          "x": 530,
+          "y": 780,
+          "jumps": {}
+        }
+      }
+    }
+  },
+  "atomAssertions": [],
+  "globalAssertions": []
+}
