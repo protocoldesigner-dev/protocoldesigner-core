@@ -44,6 +44,9 @@ public class Action {
      */
     private List<String> cascadeNames = null;
     
+    /**
+     * @return whether this action has cascaded actions
+     */
     protected boolean hasCascades(){
         return cascadeNames!=null && cascadeNames.size()>0; 
     }
@@ -67,7 +70,9 @@ public class Action {
     }
 
     /**
-     * is action is acceptable now
+     * If the state of node this action belongs to isn't equal 
+     * to start state of this action, this action is not acceptable.
+     * @return whether then this action is acceptable. 
      */
     public boolean acceptable(){
         return node.currentState().equals(this.start) ;

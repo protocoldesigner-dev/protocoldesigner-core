@@ -128,11 +128,14 @@ public class ProtocolExecutor {
         return a;
     }
 
-    /**
-     * return all the positive events that can be issued from outside.
-     * format 
-     *    node:action
+    /*
      * TODO action name duplication
+     */
+    /**
+     * format 
+     *    node:action:tag
+     * @return events that can be registered
+     * @see #registerHook(DefaultEvent, TriFunction)
      */
     public List<String> getEvents(){
         return this.nodes.entrySet().stream().map(e->{
@@ -143,9 +146,17 @@ public class ProtocolExecutor {
     
     /**
      * add event and wait until event is <b>accepted</b>
-     * TODO javadoc documentation
+     * <p>
+     * Extend the {@link DefaultEvent} to add more context information.
+     *
+     * @param event the event to be issued
+     * @return true if the event is accepted 
+     * @throws InterruptedException if interruped when waiting for event to be accepted 
+     *
+     * @see ActionTask#accepted()
+     * @see ActionTask#accept()
      */
-    public boolean issueEvent(DefaultEvent event) throws IllegalArgumentException, InterruptedException{
+    public boolean issueEvent(DefaultEvent event) throws InterruptedException{
         if(shutdown) return false;
         if(event==null) throw new NullPointerException("event is null!");
         if(event!=DefaultEvent.STOP) getEvent(event);   //get the related action to check if the event is valid
@@ -160,9 +171,18 @@ public class ProtocolExecutor {
     }
 
     
-    /**
-     * {@code #issueEvent(String)} and wait until event is <b>processed</b>
+    /*
      * TODO duplicated code
+     */
+    /**
+     * {@link #issueEvent(DefaultEvent)} and wait until event is <b>processed</b>
+     *
+     * @param event event to be issued
+     * @return if the event is successfully processed
+     * @throws InterruptedException if interrupted when waiting for event to be accepted or waiting for event to be processed 
+     *
+     * @see #issueEvent(DefaultEvent)
+     * @see ActionTask#waitUntilProcessed()
      */
     public boolean issueEventBlocking(DefaultEvent event) throws InterruptedException{
         if(shutdown) return false;
@@ -181,10 +201,16 @@ public class ProtocolExecutor {
 
     /**
      * register a hook of {@link ProtocolExecutor}  lifecycle  
-     * supported :
-     *  1. init 
-     *  2. start
-     * TODO extend
+     * <p>
+     * supported hook:
+     * <ul>
+     *  <li>1. init 
+     *  <li>2. start
+     * </ul>
+     * @param event  the inner event registered to
+     * @param hook   the hook to be called
+     * @see DefaultEvent#INIT
+     * @see DefaultEvent#START
      */
     public void registerHook(DefaultEvent event, TriFunction<DefaultEvent, String, String> hook){
         if(event==DefaultEvent.INIT){
@@ -199,6 +225,7 @@ public class ProtocolExecutor {
     }
     /**
      * reuse this protocol executor?
+     * @return count of cleared events
      */
     private int clear(){
         int size= events.size();
@@ -267,6 +294,13 @@ public class ProtocolExecutor {
             hook.apply(DefaultEvent.START, "inited", "started");
         }
     }
+    /**
+     * issue event {@link DefaultEvent#STOP} and shutdown the inner executor.
+     * The events already issued will be processed before stop.
+     * @throws InterruptedException If interrupted when issuing the STOP event
+     *
+     * @see #shutdownNow()
+     */
     public void shutdown()throws InterruptedException{
         issueEvent(DefaultEvent.STOP);
         shutdown=true;
@@ -274,6 +308,10 @@ public class ProtocolExecutor {
         log.info("protocol executor halted.");
     }
 
+    /**
+     * drops event and stop immediately
+     * @see #shutdown()
+     */
     public void shutdownNow(){
         log.info("halting down protocol executor, {} events dropped", clear());
         executor.shutdownNow();

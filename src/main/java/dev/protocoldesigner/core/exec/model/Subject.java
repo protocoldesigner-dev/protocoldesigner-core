@@ -17,6 +17,9 @@ public class Subject extends GraphElement{
     private String initial;
     private Map<String, State> states;
 
+    /**
+     * @return set of state names
+     */
     public Set<String> stateNames(){
         return this.states.values().stream().map(s -> s.getName()).collect(Collectors.toSet());
     }
@@ -24,7 +27,9 @@ public class Subject extends GraphElement{
     /**
      * get the name of state by state id
      * a conversion  id => name
-     * TODO reactor this
+     * TODO refactor this
+     * @param id of state
+     * @return state name
      */
     public String getStateNameById(String id){
         return states.get(id).getName();

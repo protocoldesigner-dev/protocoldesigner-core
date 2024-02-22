@@ -2,10 +2,37 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
+    
+    <name>Protocol Executor</name>
+    <description>
+        The protocol executor for ProtocolDesigner
+    </description>
     <groupId>dev.protocoldesigner</groupId>
     <artifactId>protocoldesigner-core</artifactId>
-    <version>0.1</version>
+    <version>0.1.0</version>
+    <packaging>jar</packaging>
+
+    <url>https://github.com/protocoldesigner-dev/protocoldesigner-core</url>
+    <scm>
+        <connection>scm:git:https://github.com/protocoldesigner-dev/protocoldesigner-core.git</connection>
+        <url>https://github.com/protocoldesigner-dev/protocoldesigner-core</url>
+    </scm>
+
+    <licenses>
+        <license>
+            <name>MIT</name>
+            <url>https://opensource.org/license/mit/</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <id>protocoldesigner-dev-team</id>
+            <name>ProtocolDesigner Dev Team</name>
+            <email>info@protocoldesigner.dev</email>
+        </developer>
+    </developers>
+
     <dependencies>
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
@@ -46,7 +73,59 @@
                 <configuration>
                     <source>8</source>
                     <target>8</target>
-                    <debug>true</debug>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+
+             <plugin>
+                 <groupId>org.apache.maven.plugins</groupId>
+                 <artifactId>maven-source-plugin</artifactId>
+                 <version>3.2.1</version>
+                 <executions>
+                     <execution>
+                         <id>attach-sources</id>
+                         <goals>
+                             <goal>jar-no-fork</goal>
+                         </goals>
+                     </execution>
+                 </executions>
+             </plugin>
+             <plugin>
+                 <groupId>org.apache.maven.plugins</groupId>
+                 <artifactId>maven-javadoc-plugin</artifactId>
+                 <version>3.4.1</version>
+                 <executions>
+                     <execution>
+                         <id>attach-javadocs</id>
+                         <goals>
+                             <goal>jar</goal>
+                         </goals>
+                     </execution>
+                 </executions>
+             </plugin>
+             <plugin>
+                 <groupId>org.apache.maven.plugins</groupId>
+                 <artifactId>maven-gpg-plugin</artifactId>
+                 <version>1.5</version>
+                 <executions>
+                     <execution>
+                         <id>sign-artifacts</id>
+                         <phase>verify</phase>
+                         <goals>
+                             <goal>sign</goal>
+                         </goals>
+                     </execution>
+                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>0.3.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <publishingServerId>central</publishingServerId>
+                    <tokenAuth>true</tokenAuth>
+                    <checksums>required</checksums>
                 </configuration>
             </plugin>
         </plugins>

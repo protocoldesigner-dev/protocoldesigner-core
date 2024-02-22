@@ -4,7 +4,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 /**
- * The task of action to be processed
+ * This class represents a execution ,which is triggered 
+ * by a {@link DefaultEvent} issued via {@link ProtocolExecutor#issueEvent(DefaultEvent)}
+ * or {@link ProtocolExecutor#issueEventBlocking(DefaultEvent)}
  *
  */
 public class ActionTask {
@@ -18,14 +20,27 @@ public class ActionTask {
      */
     private CompletableFuture<Boolean> acceptFuture = new CompletableFuture<>();
 
+    /**
+     * @return the related event
+     */
     public DefaultEvent getEvent(){
         return event;
     }
 
+    /**
+     * @param event the event of this task
+     */
     public ActionTask(DefaultEvent event){
         this.event = event;
     }
 
+    /**
+     * wait until the event is accepted or dropped. 
+     * The event will then be processed after this method return true( accepted) 
+     * @return if the event is accepted
+     * @see #waitUntilProcessed()
+     * @throws InterruptedException when interrupted
+     */
     public boolean accepted() throws InterruptedException{
         try{
             return this.acceptFuture.get();
@@ -33,6 +48,10 @@ public class ActionTask {
             throw new RuntimeException("Internal Error!");
         }
     }
+    /**
+     * wait until the event is processed
+     * @throws InterruptedException when interrupted
+     */
     public void waitUntilProcessed() throws  InterruptedException{
         try{
             this.future.get();
@@ -40,9 +59,16 @@ public class ActionTask {
             throw new RuntimeException("Internal Error!");
         }
     }
+    /**
+     * drop the {@link acceptFuture}, which means the event was failed to issue. 
+     * this may be caused by event not acceptable.
+     */
     public void drop(){
         this.acceptFuture.complete(false);
     }
+    /**
+     * accept the event
+     */
     public void accept(){
         this.acceptFuture.complete(true);
     }
